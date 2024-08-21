@@ -1,0 +1,53 @@
+{% include 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Регистрация
+        </div>
+        <div class="card-body">
+            {% if msg %}
+            <div class="alert {% if msg == 'Пользователь успешно создан' %} alert-success {% else %} alert-danger {% endif %}" role="alert">
+                {{msg}}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/auth/register">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Электронная почта</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Имя пользователя</label>
+                        <input type="text" class="form-control" name="username" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Имя</label>
+                        <input type="text" class="form-control" name="first_name" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Фамилия</label>
+                        <input type="text" class="form-control" name="last_name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label>Подтвердите пароль</label>
+                    <input type="password" class="form-control" name="password2" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            <a href="/auth">Уже есть аккаунт?</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

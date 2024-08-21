@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Создать Задачу</h1>
+    <form id="task-form" action="/tasks/create-task" method="POST">
+        <div class="mb-3">
+            <label for="description" class="form-label">Описание задачи:</label>
+            <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="date_task" class="form-label">Дата задачи:</label>
+            <input type="date" id="date_task" name="date_task" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="start" class="form-label">Время начала:</label>
+            <input type="text" id="start" name="start" class="form-control" placeholder="Выберите время начала">
+        </div>
+
+        <div class="mb-3">
+            <label for="end" class="form-label">Время окончания:</label>
+            <input type="text" id="end" name="end" class="form-control" placeholder="Выберите время окончания">
+        </div>
+
+        <input type="hidden" id="duration_minutes" name="duration_minutes">
+
+        <button type="submit" class="btn btn-primary">Создать задачу</button>
+    </form>
+</div>
+{% endblock %}

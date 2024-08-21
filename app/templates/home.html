@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card text-center">
+        <div class="card-header">
+            Ваши задачи!
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Список ваших задач!</h5>
+            <p class="card-text">Информация о задачах, которые нужно выполнить</p>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Номер</th>
+                        <th scope="col">Информация</th>
+                        <th scope="col">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <!-- <td>{{ task.info }}</td> Предполагается, что у задачи есть атрибут "info" -->
+                        <td>
+                            <a href="/tasks/{{ task.id }}/edit" class="btn btn-primary">Редактировать</a>
+                            <a href="/tasks/{{ task.id }}/delete" class="btn btn-danger">Удалить</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="/tasks/create-task" class="btn btn-primary">Добавить новую задачу!</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
