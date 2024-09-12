@@ -20,6 +20,9 @@ class Tasks(Base):
     update_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
     status: Mapped[bool] = mapped_column(Boolean, default=False)
 
+    create_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    update_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
+
 
     user_rel: Mapped[List["Users"]] = relationship(back_populates="task_rel")
 

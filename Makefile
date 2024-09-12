@@ -1,2 +1,3 @@
 start:
-	poetry run python app/main.py
+	poetry run python -m uvicorn app.__main__:app
+	

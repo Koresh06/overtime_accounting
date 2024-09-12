@@ -19,13 +19,13 @@ class DatabaseConfig:
 
 
 class TestDatabaseConfig(DatabaseConfig):
-    name: str = os.getenv("TEST_DB_NAME", "tasks_test")  
+    name: str = os.getenv("TEST_DB_NAME", "tasks_test")
 
 
 class AuthConfig:
-    secret_key = os.getenv("SECRET_KEY")
-    algorithm = os.getenv("ALGORITHM")
-    access_token_expire_minutes = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    ALGORITHM = os.getenv("ALGORITHM")
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 
 class Settings:
@@ -35,5 +35,3 @@ class Settings:
 
 
 settings = Settings()
-
-

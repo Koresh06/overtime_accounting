@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, Result, desc
 
 from app.core.models.tasks import Tasks
-from app.routers.schemas.tasks_schemas import TaskCreateSchema
+from app.routers.tasks.tasks_schemas import TaskCreateSchema
 
 
 

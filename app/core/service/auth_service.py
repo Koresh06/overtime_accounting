@@ -10,8 +10,13 @@ class AuthService:
         self.session = session
 
 
-    def authenticate_user(self, username: str):
+    def authenticate_user_db(self, username: str):
         stmt = select(Users).where(Users.username == username)
+        result: Result = self.session.scalar(stmt)
+        return result
+    
+    def get_user_by_id(self, user_id: int):
+        stmt = select(Users).where(Users.id == user_id)
         result: Result = self.session.scalar(stmt)
         return result
     
@@ -26,5 +31,11 @@ class AuthService:
         stmt = select(Users).where(Users.email == email)
         result: Result = self.session.execute(stmt)
         return result.first()
+    
+    def create_user_db(self, user: Users):
+        self.session.add(user)
+        self.session.commit()
+        self.session.refresh(user)
+        return user
     
     

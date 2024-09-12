@@ -6,10 +6,12 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from app.core.db_halper import db_helper
-from app.utils.assistants_auth import get_current_user
+from app.routers import templates
+from app.core.models.users import Users
 from app.core.service.tasks_service import TasksService
 from app.core.models.tasks import Tasks
-from app.routers.schemas.tasks_schemas import TaskCreateSchema
+from app.routers.auth.dependence import get_current_user
+from app.routers.tasks.tasks_schemas import TaskCreateSchema
 
 
 router = APIRouter(
@@ -20,8 +22,6 @@ router = APIRouter(
     },
 )
 
-templates = Jinja2Templates(directory="app/templates")
-
 
 @router.get("/", response_class=HTMLResponse)
 async def read_all_by_user(
@@ -30,12 +30,15 @@ async def read_all_by_user(
         Session,
         Depends(db_helper.get_db),
     ],
+    user: Users = Depends(get_current_user),
 ):
-    user = await get_current_user(request)
-    if user is None:
+    if not user:
         return RedirectResponse(url="/auth/", status_code=status.HTTP_302_FOUND)
-
-    tasks = TasksService(session).get_all_tasks(user.get("id"))
+    try:
+        tasks = TasksService(session).get_all_tasks(user.id)
+    except Exception as e:
+        print(e)
+        
     return templates.TemplateResponse(
         "home.html",
         {
@@ -47,8 +50,10 @@ async def read_all_by_user(
 
 
 @router.get("/create-task", response_class=HTMLResponse)
-async def create_task(request: Request):
-    user = await get_current_user(request)
+async def create_task(
+    request: Request,
+    user: Users = Depends(get_current_user),
+):
     if user is None:
         return RedirectResponse(url="/auth/", status_code=status.HTTP_302_FOUND)
 
@@ -68,13 +73,15 @@ async def create_task(
         Session,
         Depends(db_helper.get_db),
     ],
-    task_data: TaskCreateSchema = Depends(TaskCreateSchema.as_form)
+    task_data: TaskCreateSchema = Depends(TaskCreateSchema.as_form),
+    user: Users = Depends(get_current_user),
 ):
-    user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/auth/", status_code=status.HTTP_302_FOUND)
 
-
-    TasksService(session).create_task(task=task_data, user_id=user.get("id"))
+    try:
+        TasksService(session).create_task(task=task_data, user_id=user.get("id"))
+    except Exception as e:
+        print(e)
 
     return RedirectResponse(url="/tasks/", status_code=status.HTTP_302_FOUND)

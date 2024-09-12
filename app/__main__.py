@@ -3,15 +3,14 @@ import uvicorn
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
-from app.routers.auth import router as auth_router
-from app.routers.tasks import router as tasks_router
+from app.routers.auth.auth_router import router as auth_router
+from app.routers.tasks.tasks_router import router as tasks_router
+from app.routers.auth.logout import router as logout_router
 
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
-
-templates = Jinja2Templates(directory="app/templates")
 
 
 @app.get("/")
@@ -21,6 +20,7 @@ async def root():
 
 app.include_router(auth_router)
 app.include_router(tasks_router)
+app.include_router(logout_router)
 
 
 
